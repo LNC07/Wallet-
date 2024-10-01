@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LNC Coin Mining App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        .balance {
+            font-size: 24px;
+            margin: 20px 0;
+            color: #4CAF50;
+        }
+        .coin-count {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #f39c12;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>LNC Coin Mining App</h1>
+    <div class="container">
+        <div class="coin-count">বর্তমান Coin সংখ্যা: <span id="coinCount">0</span></div>
+        <div class="balance">ব্যালেন্স: <span id="balance">0</span></div>
+
+        <button class="button" onclick="claimCoins()">Claim Coins</button>
+        <button class="button" onclick="startMining()">Mining শুরু করুন</button>
+    </div>
+
+    <script>
+        let coinCount = 0;
+        const maxCoins = 45;
+        let lastClaimTime = null;
+        let balance = 0;
+
+        function growCoins() {
+            const currentTime = Date.now();
+            if (lastClaimTime == null || currentTime - lastClaimTime >= 24 * 60 * 60 * 1000) {
+                coinCount = Math.min(coinCount + maxCoins, maxCoins);
+                lastClaimTime = currentTime;
+            }
+            document.getElementById("coinCount").innerText = coinCount;
+        }
+
+        function claimCoins() {
+            if (coinCount >= maxCoins) {
+                balance += coinCount;
+                coinCount = 0;
+                document.getElementById("balance").innerText = balance;
+                alert("Coins claimed! New balance: " + balance);
+            } else {
+                alert("আপনাকে 45 Coins ক্লেইম করার জন্য অপেক্ষা করতে হবে।");
+            }
+        }
+
+        function startMining() {
+            setInterval(growCoins, 1000); // প্রতি সেকেন্ডে Coin বাড়বে
+        }
+    </script>
+
+</body>
+</html>
